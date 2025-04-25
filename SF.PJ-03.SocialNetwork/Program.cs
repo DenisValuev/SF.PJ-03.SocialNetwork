@@ -15,6 +15,8 @@ namespace SF.PJ_03.SocialNetwork
                 .AddJsonFile("appsettings.json")
                 .Build();
 
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
