@@ -17,6 +17,6 @@ namespace SF.PJ_03.SocialNetwork.ViewModels.Account
         [Display(Name = "Запомнить?")]
         public bool RememberMe { get; set; }
 
-        public string REturnUrl { get; set; }
+        public string ReturnUrl { get; set; }
     }
 }
