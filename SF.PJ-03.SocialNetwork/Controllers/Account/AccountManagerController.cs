@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SF.PJ_03.SocialNetwork.Models.Users;
@@ -37,6 +38,16 @@ namespace SF.PJ_03.SocialNetwork.Controllers.Account
             return View(new LoginViewModel { ReturnUrl = returnUrl });
         }
 
+        [Authorize]
+        [Route("MyPage")]
+        [HttpGet]
+        public IActionResult MyPage()
+        {
+            var user = User;
+            var result =  _userManager.GetUserAsync(user);
+            return View("User", new UserViewModel(result.Result));
+        }
+
         [Route("Login")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -44,26 +55,20 @@ namespace SF.PJ_03.SocialNetwork.Controllers.Account
         {
             if (ModelState.IsValid)
             {
-                var user = _mapper.Map<User>(model);
+                var user = await _userManager.FindByEmailAsync(model.Email);
 
                 var result = await _signInManager.PasswordSignInAsync(user.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
-                    {
-                        return Redirect(model.ReturnUrl);
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    return RedirectToAction("MyPage", "AccountManager");
                 }
+
                 else
                 {
                     ModelState.AddModelError("", "Неправильный логин и (или) пароль");
                 }
             }
-            return View("Views/Home/Index.cshtml");
+            return RedirectToAction("Index", "Home");
         }
 
         [Route("Logout")]

@@ -26,6 +26,10 @@
         float: right;
     }
 
+    .righ-align {
+        float: right;
+    }
+
     .topnav input[type=text] {
         padding: 6px;
         margin-top: 8px;
@@ -51,4 +55,19 @@
         border: 1px solid #ccc;
     }
 
+}
+
+.gray-text {
+    color: darkgrey;
+}
+
+.lined-block {
+    border-right: 0;
+    border-left: 0;
+    border-bottom: 1px;
+    border-top: 1 px;
+    border-color: #ddd;
+    padding: 10px;
+    border-style: dashed;
+    margin: 10px;
 }
