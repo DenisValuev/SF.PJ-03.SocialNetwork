@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SF.PJ_03.SocialNetwork.Extentions;
 using SF.PJ_03.SocialNetwork.Models.Users;
 using SF.PJ_03.SocialNetwork.ViewModels.Account;
 
@@ -48,7 +49,45 @@ namespace SF.PJ_03.SocialNetwork.Controllers.Account
             return View("User", new UserViewModel(result.Result));
         }
 
-        [Route("Login")]
+        [Route("Edit")]
+        [HttpGet]
+        public IActionResult Edit()
+        {
+            var user = User;
+            var result = _userManager.GetUserAsync(user);
+            var editmodel = _mapper.Map<UserEditViewModel>(result.Result);
+            return View("Edit", editmodel);
+        }
+
+        [Authorize]
+        [Route("Update")]
+        [HttpPost]
+        public async Task<IActionResult> Update(UserEditViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(model.UserId);
+
+                user.Convert(model);
+
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("MyPage", "AccountManager");
+                }
+                else
+                {
+                    return RedirectToAction("Edit", "AccountMAnager");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Некорректные данные");
+                return View("Edit", model);
+            }
+        }
+
+        [Route("AccountManager/Login")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
