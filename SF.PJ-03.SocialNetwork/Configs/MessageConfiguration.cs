@@ -11,10 +11,10 @@ namespace SF.PJ_03.SocialNetwork.Configs
             builder.ToTable("Mesages").HasKey(p => p.Id);
             builder.Property(x => x.Id).UseIdentityColumn();
             builder
-                .HasOne(m => m.Sender)
-                .WithMany()
-                .HasForeignKey(m => m.SenderId)
-                .OnDelete(DeleteBehavior.NoAction);
+            .HasOne(m => m.Sender)
+            .WithMany()
+            .HasForeignKey(m => m.SenderId)
+            .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

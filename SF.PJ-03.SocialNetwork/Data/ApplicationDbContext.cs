@@ -16,6 +16,7 @@ namespace SF.PJ_03.SocialNetwork.Data
         {
             base.OnModelCreating(builder);
             builder.ApplyConfiguration<Friend>(new FriendConfiguration());
+            builder.ApplyConfiguration<Message>(new MessageConfiguration());
         }
     }
 }
