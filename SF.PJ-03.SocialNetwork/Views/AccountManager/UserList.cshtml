@@ -1,0 +1,42 @@
+﻿@model SF.PJ_03.SocialNetwork.ViewModels.Account.SearchViewModel;
+
+<div class="block-reg background-white">
+
+    @if (Model.UserList.Count != 0)
+    {
+
+        @foreach (var user in @Model.UserList)
+        {
+            <div>
+                <div class="mrgn">
+                    <img src="@user.Image" class="ava" />
+                </div>
+                <div class="mrgn">
+                    @user.GetFullName()
+                </div>
+                <div class="mrgn">
+                    @user.Status
+                </div>
+                <div class="mrgn">
+                    @user.About
+                </div>
+                @if (!@user.IsFriendWithCurrent && !user.IsCurrentUser)
+                {
+                    <form asp-controller="AccountManager" asp-action="AddFriend" asp-route-id="@user.Id" method="post">
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            Добавить в друзья
+                        </button>
+                    </form>
+                }
+            </div>
+        }
+    }
+    else
+    {
+        <div>
+            <label> Поиск не дал результатов.</label>
+        </div>
+    }
+
+
+</div>

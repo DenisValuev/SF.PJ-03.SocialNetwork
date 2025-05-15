@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SF.PJ_03.SocialNetwork.Configs;
 using SF.PJ_03.SocialNetwork.Data;
+using SF.PJ_03.SocialNetwork.Data.Repository;
+using SF.PJ_03.SocialNetwork.Data.UoW;
 using SF.PJ_03.SocialNetwork.Models.Users;
 
 namespace SF.PJ_03.SocialNetwork
@@ -22,7 +25,11 @@ namespace SF.PJ_03.SocialNetwork
 
             string connection = config.GetConnectionString("DefaultConnection");
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
+            builder.Services
+                .AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection))
+                .AddCustomRepository<Friend, FriendsRepository>()
+                .AddTransient<IUnitOfWork, UnitOfWork>();
+
 
             builder.Services.AddIdentity<User, IdentityRole>(opts =>
             {
